@@ -1,0 +1,22 @@
+{
+	"hash": "4ac018253363f5f39a4b1d237f9149c5",
+	"updated": "2022-04-19T15:22:12.1592364-03:00",
+	"installedModules": {
+		"github.com/viniciussanchez/dataset-serialize": {
+			"name": "dataset-serialize",
+			"version": "v2.4.0",
+			"hash": "f47b044fca0d9bb347f856798fb20cad",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/viniciussanchez/restrequest4delphi": {
+			"name": "restrequest4delphi",
+			"version": "v3.0.18",
+			"hash": "23f252aadf6530a6ec015c020e1419a6",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		}
+	}
+}

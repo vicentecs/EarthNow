@@ -1,0 +1,11 @@
+{
+	"name": "EarthNow",
+	"description": "Earth Now",
+	"version": "1.0.0",
+	"homepage": "https://github.com/vicentecs/EarthNow",
+	"mainsrc": "./src",
+	"projects": [],
+	"dependencies": {
+		"github.com/viniciussanchez/restrequest4delphi": "^v3.0.18"
+	}
+}
