@@ -22,7 +22,9 @@ uses
 
   SHDocVw,
 
-  Controller.EarthNow;
+  Controller.EarthNow,
+  Controller.Atualizacao,
+  Controller.Aplicativo;
 
 type
   TfrmEarthNow = class(TForm)
@@ -154,6 +156,11 @@ end;
 procedure TfrmEarthNow.FormCreate(Sender: TObject);
 begin
   try
+    if TControllerAtualizacao.Executar(TAplicativo.VersaoExe,
+      'https://raw.githubusercontent.com/vicentecs/EarthNow/main/boss.json',
+      'https://github.com/vicentecs/EarthNow/releases/download/v%s/Setup-EarthNow.exe' ) then
+      Application.Terminate;
+
     FEarNow := TControllerEarNow.Create;
     BuscarDados;
     AtualizaLbData;

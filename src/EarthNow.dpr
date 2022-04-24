@@ -10,7 +10,10 @@ uses
   Model.Config in 'Model.Config.pas',
   View.Principal in 'View.Principal.pas' {frmEarthNow},
   Controller.Config in 'Controller.Config.pas',
-  Controller.EarthNow in 'Controller.EarthNow.pas';
+  Controller.EarthNow in 'Controller.EarthNow.pas',
+  Model.Boss in 'Model.Boss.pas',
+  Controller.Atualizacao in 'Controller.Atualizacao.pas',
+  View.Download in 'View.Download.pas' {frmDownload};
 
 {$R *.res}
 
