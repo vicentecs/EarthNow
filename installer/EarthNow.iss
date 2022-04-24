@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define EarthNowName "Earth Now"
-#define EarthNowVersion "1.0.0"
+#define EarthNowVersion "1.0.1"
 #define EarthNowPublisher "VicenteCS"
 #define EarthNowURL "https://github.com/vicentecs/EarthNow"
 #define EarthNowExeName "EarthNow.exe"
