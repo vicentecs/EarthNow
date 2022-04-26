@@ -77,17 +77,17 @@ object frmEarthNow: TfrmEarthNow
     Width = 105
     Height = 25
     Caption = '&Atualizar Lista'
-    TabOrder = 0
+    TabOrder = 1
     OnClick = btnAtualizarClick
   end
   object btnAplicar: TButton
-    Left = 657
+    Left = 551
     Top = 426
-    Width = 108
+    Width = 100
     Height = 25
     Anchors = [akLeft]
-    Caption = 'A&plicar Imagem'
-    TabOrder = 1
+    Caption = 'Aplicar Imagem'
+    TabOrder = 4
     OnClick = btnAplicarClick
   end
   object wb1: TWebBrowser
@@ -96,7 +96,7 @@ object frmEarthNow: TfrmEarthNow
     Width = 494
     Height = 380
     Anchors = [akLeft, akTop, akRight, akBottom]
-    TabOrder = 2
+    TabOrder = 3
     ControlData = {
       4C0000000E330000462700000000000000000000000000000000000000000000
       000000004C000000000000000000000001000000E0D057007335CF11AE690800
@@ -110,7 +110,7 @@ object frmEarthNow: TfrmEarthNow
     Width = 249
     Height = 145
     ItemHeight = 13
-    TabOrder = 3
+    TabOrder = 0
     OnClick = lstSatalitesClick
   end
   object cbbIntervalo: TComboBox
@@ -121,13 +121,23 @@ object frmEarthNow: TfrmEarthNow
     AutoComplete = False
     Style = csDropDownList
     ItemIndex = 1
-    TabOrder = 4
+    TabOrder = 2
     Text = 'A cada 20 minutos'
     OnChange = cbbIntervaloChange
     Items.Strings = (
       'Nunca'
       'A cada 20 minutos'
       'A cada 60 minutos')
+  end
+  object btnLimparCache: TButton
+    Left = 657
+    Top = 426
+    Width = 100
+    Height = 25
+    Anchors = [akLeft]
+    Caption = 'L&impar Cache'
+    TabOrder = 5
+    OnClick = btnLimparCacheClick
   end
   object tmrAtualiza: TTimer
     Enabled = False

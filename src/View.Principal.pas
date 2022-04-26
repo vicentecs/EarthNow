@@ -44,6 +44,7 @@ type
     cbbIntervalo: TComboBox;
     lblAtualiza: TLabel;
     lblSobre: TLabel;
+    btnLimparCache: TButton;
     procedure btnAtualizarClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnAplicarClick(Sender: TObject);
@@ -56,6 +57,7 @@ type
     procedure lstSatalitesClick(Sender: TObject);
     procedure lblSobreClick(Sender: TObject);
     procedure cbbIntervaloChange(Sender: TObject);
+    procedure btnLimparCacheClick(Sender: TObject);
   private
       { Private declarations }
     FEarNow: TControllerEarNow;
@@ -106,6 +108,7 @@ begin
     begin
       btnAplicar.Enabled := False;
       try
+        FEarNow.SetSatelite(lstSatalites.ItemIndex);
         AplicarImg;
       finally
         btnAplicar.Enabled := True;
@@ -123,6 +126,16 @@ begin
   except
     on E: Exception do
       ShowMessage('Falha ao baixar os dados: ' + E.Message);
+  end;
+end;
+
+procedure TfrmEarthNow.btnLimparCacheClick(Sender: TObject);
+begin
+  btnLimparCache.Enabled := False;
+  try
+    FEarNow.LimparCache;
+  finally
+    btnLimparCache.Enabled := True;
   end;
 end;
 
@@ -189,7 +202,6 @@ begin
   Url := FEarNow.UrlMini(lstSatalites.ItemIndex);
   if wb1.LocationURL <> Url then
     wb1.Navigate(Url);
-  FEarNow.SetSatelite(lstSatalites.ItemIndex);
 end;
 
 procedure TfrmEarthNow.MostrarAPP;

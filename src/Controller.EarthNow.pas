@@ -37,6 +37,7 @@ type
     procedure AplicarImg(AItem: Integer);
     procedure AtualizaIntervalo(var ACombo: TCombobox);
     procedure AtualizaLabelDt(var ALabelCap, ALabelDt: TLabel);
+    procedure LimparCache;
 
     procedure SetSatelite(ASat: Integer);
     procedure SetIntervaloi(AIntervalor: Integer);
@@ -225,6 +226,23 @@ function TControllerEarNow.DeveAtualizar(AItem: Integer): Boolean;
 begin
   Result := ((FConfig.UltimoSat <> AItem)) or
     ((FConfig.UltimoSat = AItem) and (IncMinute(FConfig.DtAtualizacao, FConfig.TempoAtualiza) < Now));
+end;
+
+procedure TControllerEarNow.LimparCache;
+var
+  item: Integer;
+  ArqJPG: string;
+  ArqBMP: string;
+begin
+  for item := 0 to Pred(Length(FSatelite.Satelites.sources)) do
+  begin
+    ArqJPG := FSatelite.GetNome(item);
+    if FileExists(ArqJPG) then
+      DeleteFile(PChar(ArqJPG));
+    ArqBMP := ChangeFileExt(ArqJPG, '.bmp');
+    if FileExists(ArqBMP) then
+      DeleteFile(PChar(ArqBMP));
+  end;
 end;
 
 procedure TControllerEarNow.SetIntervaloi(AIntervalor: Integer);

@@ -14,7 +14,6 @@
 AppId={{359BAC38-A46D-4ED5-9836-074B748E3E21}
 AppName={#EarthNowName}
 AppVersion={#EarthNowVersion}
-AppVerName={#EarthNowVersion}
 ;AppVerName={#EarthNowName} {#EarthNowVersion}
 AppPublisher={#EarthNowPublisher}
 AppPublisherURL={#EarthNowURL}
