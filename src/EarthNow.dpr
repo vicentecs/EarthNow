@@ -18,15 +18,9 @@ uses
 {$R *.res}
 
 begin
-  if Now > EncodeDate(2022,12,31) then
-  begin
-    ShowMessage('Teste encerrado, entre em contato com desenvolvedor.');
-    Exit;
-  end;
-
   if TAplicativo.EmUso  then
   begin
-    if not TAplicativo.Mostrar(Application.ExeName) then
+    if not TAplicativo.Mostrar('TfrmEarthNow') then
       ShowMessage('O aplicativo já está aberto.');
     Exit;
   end;

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define EarthNowName "Earth Now"
-#define EarthNowVersion "1.0.1"
+#define EarthNowVersion "1.0.3"
 #define EarthNowPublisher "VicenteCS"
 #define EarthNowURL "https://github.com/vicentecs/EarthNow"
 #define EarthNowExeName "EarthNow.exe"
@@ -43,6 +43,7 @@ Name: "{group}\{#EarthNowName}"; Filename: "{app}\{#EarthNowExeName}"
 Name: "{group}\{cm:UninstallProgram,{#EarthNowName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#EarthNowName}"; Filename: "{app}\{#EarthNowExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#EarthNowName}"; Filename: "{app}\{#EarthNowExeName}"; Tasks: quicklaunchicon
+Name: "{userstartup}\{#EarthNowName}"; Filename: "{app}\{#EarthNowExeName}"; Parameters: "-startup"
 
 [Run]
 Filename: "{app}\{#EarthNowExeName}"; Description: "{cm:LaunchProgram,{#StringChange(EarthNowName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

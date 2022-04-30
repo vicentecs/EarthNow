@@ -58,6 +58,7 @@ type
     procedure lblSobreClick(Sender: TObject);
     procedure cbbIntervaloChange(Sender: TObject);
     procedure btnLimparCacheClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
       { Private declarations }
     FEarNow: TControllerEarNow;
@@ -65,7 +66,8 @@ type
     function BuscarDados: Boolean;
     property Sair: Boolean read FSair write FSair default False;
 
-    procedure AtualizaLbData;
+    procedure AtualizarLbData;
+    procedure AtualizarMiniatura;
     procedure AplicarImg;
     procedure MostrarAPP;
     procedure OcultarAPP;
@@ -91,12 +93,22 @@ begin
     Exit;
 
   FEarNow.AplicarImg(lstSatalites.ItemIndex);
-  AtualizaLbData;
+  AtualizarMiniatura;
+  AtualizarLbData;
 end;
 
-procedure TfrmEarthNow.AtualizaLbData;
+procedure TfrmEarthNow.AtualizarLbData;
 begin
   FEarNow.AtualizaLabelDt(lblAtualizacao, lblUltimaDT);
+end;
+
+procedure TfrmEarthNow.AtualizarMiniatura;
+var
+  Url: string;
+begin
+  Url := FEarNow.UrlMini(lstSatalites.ItemIndex);
+  if Url <> EmptyStr then
+    wb1.Navigate(Url);
 end;
 
 procedure TfrmEarthNow.btnAplicarClick(Sender: TObject);
@@ -174,11 +186,11 @@ begin
       'https://github.com/vicentecs/EarthNow/releases/download/v%s/Setup-EarthNow.exe' ) then
       Application.Terminate;
 
+    Caption := Caption + TAplicativo.VersaoExe;
     FEarNow := TControllerEarNow.Create;
     BuscarDados;
-    AtualizaLbData;
+    AtualizarLbData;
     FEarNow.AtualizaIntervalo(cbbIntervalo);
-    tmrAtualiza.Enabled := True;
   except
     on E: Exception do
   end;
@@ -190,18 +202,19 @@ begin
     FEarNow.Free;
 end;
 
+procedure TfrmEarthNow.FormShow(Sender: TObject);
+begin
+  tmrAtualiza.Enabled := True;
+end;
+
 procedure TfrmEarthNow.lblSobreClick(Sender: TObject);
 begin
   ShellAPI.ShellExecute(0, 'Open', PChar('https://github.com/vicentecs/EarthNow'), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TfrmEarthNow.lstSatalitesClick(Sender: TObject);
-var
-  Url: string;
 begin
-  Url := FEarNow.UrlMini(lstSatalites.ItemIndex);
-  if wb1.LocationURL <> Url then
-    wb1.Navigate(Url);
+  AtualizarMiniatura;
 end;
 
 procedure TfrmEarthNow.MostrarAPP;
@@ -213,14 +226,21 @@ end;
 
 procedure TfrmEarthNow.OcultarAPP;
 begin
+  if not Self.Visible then
+    Self.Visible := True;
   Self.Hide;
   Self.WindowState := wsMinimized;
 end;
 
 procedure TfrmEarthNow.tmrAtualizaTimer(Sender: TObject);
+const
+  INTERVALO = 60000;
 var
   aTask: ITask;
 begin
+  if tmrAtualiza.Interval <> INTERVALO then
+    tmrAtualiza.Interval := INTERVALO;
+
   if cbbIntervalo.ItemIndex = 0 then
     Exit;
 

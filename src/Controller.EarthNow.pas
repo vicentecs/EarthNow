@@ -173,28 +173,16 @@ var
   Arq: string;
 begin
   if ExtractFileExt(xFile) <> '.jpg' then
-  begin
-      // ShowMessage('Formato diferente de jpg' + sLineBreak + 'Formato atual : ' + ExtractFileExt(xFile));
     Exit;
-  end;
 
   JPG := TJPegImage.Create;
   try
     JPG.LoadFromFile(xFile);
     Bmp1 := Vcl.Graphics.TBitmap.Create;
-      // Bmp2 := TBitmap.Create;
     try
       Arq := ChangeFileExt(xFile, '.bmp');
       Bmp1.Assign(JPG);
       Bmp1.SaveToFile(Arq);
-
-        // Bmp1.Assign(JPG);
-        // Bmp2.SetSize(Screen.DesktopWidth, Screen.DesktopHeight);
-        // Bmp2.Canvas.Brush.Color:= clBtnFace;
-        // Bmp2.Canvas.FillRect(Bmp2.Canvas.ClipRect);
-        // Bmp2.Canvas.StretchDraw(Rect(0, 0, Screen.DesktopWidth, Screen.DesktopHeight), Bmp1);
-        // Bmp2.SaveToFile(Arq);
-
       Result := Arq;
     finally
       FreeAndNil(Bmp1);

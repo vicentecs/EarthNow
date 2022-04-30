@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils,
+  Winapi.Messages,
   Winapi.Windows;
 
 type
@@ -32,10 +33,13 @@ begin
   if AppName.IsEmpty then
     raise Exception.Create('AppName em branco');
 
-  wnd := FindWindow(nil, PChar(AppName));
+  wnd := FindWindow(PChar(AppName), nil);
   Result := wnd <> 0;
   If Result then
-    SetForegroundwindow(wnd);
+  begin
+    SendMessage(wnd, WM_SYSCOMMAND, SC_RESTORE, 0);
+    Result := SetForegroundwindow(wnd);
+  end;
 end;
 
 class function TAplicativo.VersaoExe: String;
@@ -63,11 +67,10 @@ begin
     begin
       VerQueryValue(Data, '', Buffer, Tamanho);
       F := PFFI(Buffer);
-      Result := Format('%d.%d.%d.%d',
+      Result := Format('%d.%d.%d',
         [HiWord(F^.dwFileVersionMs),
         LoWord(F^.dwFileVersionMs),
-        HiWord(F^.dwFileVersionLs),
-        LoWord(F^.dwFileVersionLs)]);
+        HiWord(F^.dwFileVersionLs)]);
     end;
     StrDispose(Data);
   end;

@@ -3,7 +3,7 @@ object frmEarthNow: TfrmEarthNow
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'Earth Now - 1.0.0.1'
+  Caption = 'Earth Now - '
   ClientHeight = 459
   ClientWidth = 775
   Color = clWhite
@@ -17,6 +17,7 @@ object frmEarthNow: TfrmEarthNow
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   DesignSize = (
     775
     459)
@@ -141,7 +142,7 @@ object frmEarthNow: TfrmEarthNow
   end
   object tmrAtualiza: TTimer
     Enabled = False
-    Interval = 60000
+    Interval = 10
     OnTimer = tmrAtualizaTimer
     Left = 376
     Top = 120
