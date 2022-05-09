@@ -59,18 +59,20 @@ var
   Reg: TRegIniFile;
 begin
   Reg := TRegIniFile.Create('Control Panel\Desktop');
-
-  with Reg do
-  begin
-    WriteString('', 'Wallpaper', pImagemBMP);
-    WriteString('', 'WallpaperStyle', '6');
-    if (pTile) then
-      WriteString('', 'TileWallpaper', '1')
-    else
-      WriteString('', 'TileWallpaper', '0')
+  try
+    with Reg do
+    begin
+      WriteString('', 'Wallpaper', pImagemBMP);
+      WriteString('', 'WallpaperStyle', '6');
+      if (pTile) then
+        WriteString('', 'TileWallpaper', '1')
+      else
+        WriteString('', 'TileWallpaper', '0')
+    end;
+  finally
+    Reg.Free;
+    SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, nil, SPIF_SENDWININICHANGE);
   end;
-  Reg.Free;
-  SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, nil, SPIF_SENDWININICHANGE);
 end;
 
 procedure TControllerEarNow.AplicarImg(AItem: Integer);
@@ -84,7 +86,8 @@ begin
 
   Source := FSatelite.Satelites.sources[AItem];
   if Source.url.large.IsEmpty then
-    Exit;
+    raise Exception.Create('url em branco');
+
 
   ArqJPG := FSatelite.GetNome(AItem);
   ArqBMP := ChangeFileExt(ArqJPG, '.bmp');
@@ -92,24 +95,24 @@ begin
   if DeveAtualiza(ArqBMP) then
   begin
     if not BaixarImg(Source.url.large, ArqJPG) then
-      Exit;
+      raise Exception.Create(Format('falha no donload:%s%s%s%s',[sLineBreak,Source.url.large,sLineBreak,ArqJPG]));
 
-    ArqBMP := ConvertJPG_BMP(ArqJPG);
-
-    if ArqBMP.IsEmpty or not FileExists(ArqBMP) then
-      Exit;
+//    ArqBMP := ConvertJPG_BMP(ArqJPG);
+//
+//    if ArqBMP.IsEmpty or not FileExists(ArqBMP) then
+//      raise Exception.Create('Falha na conversao pra BMP');
 
     FConfig.UltimoSat := AItem;
     FConfig.DtAtualizacao := Now;
   end;
+//
+//  if FileExists(ArqJPG) then
+//    DeleteFile(PChar(ArqJPG));
 
-  if FileExists(ArqJPG) then
-    DeleteFile(PChar(ArqJPG));
+//  if ArqBMP.IsEmpty or not FileExists(ArqBMP) then
+//    raise Exception.Create(Format('Arquivo BMP não exite: ', [ArqBMP]));
 
-  if ArqBMP.IsEmpty or not FileExists(ArqBMP) then
-    Exit;
-
-  AlterarBG(ArqBMP, False);
+  AlterarBG(ArqJPG, False);
 end;
 
 procedure TControllerEarNow.AtualizaIntervalo(var ACombo: TCombobox);

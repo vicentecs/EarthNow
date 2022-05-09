@@ -45,6 +45,7 @@ type
     lblAtualiza: TLabel;
     lblSobre: TLabel;
     btnLimparCache: TButton;
+    tmrMinimizar: TTimer;
     procedure btnAtualizarClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnAplicarClick(Sender: TObject);
@@ -59,6 +60,7 @@ type
     procedure cbbIntervaloChange(Sender: TObject);
     procedure btnLimparCacheClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure tmrMinimizarTimer(Sender: TObject);
   private
       { Private declarations }
     FEarNow: TControllerEarNow;
@@ -71,6 +73,7 @@ type
     procedure AplicarImg;
     procedure MostrarAPP;
     procedure OcultarAPP;
+    procedure TimeMinimizar;
   public
       { Public declarations }
   end;
@@ -170,7 +173,7 @@ end;
 
 procedure TfrmEarthNow.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  if Sair then
+  if Sair or not Self.Visible then
     Exit
   else
     CanClose := False;
@@ -186,6 +189,7 @@ begin
       'https://github.com/vicentecs/EarthNow/releases/download/v%s/Setup-EarthNow.exe' ) then
       Application.Terminate;
 
+    TimeMinimizar;
     Caption := Caption + TAplicativo.VersaoExe;
     FEarNow := TControllerEarNow.Create;
     BuscarDados;
@@ -230,6 +234,21 @@ begin
     Self.Visible := True;
   Self.Hide;
   Self.WindowState := wsMinimized;
+end;
+
+procedure TfrmEarthNow.TimeMinimizar;
+var
+  I: Integer;
+begin
+  for I := 1 to ParamCount do
+    if LowerCase(ParamStr(i)) = '-startup' then
+      tmrMinimizar.Enabled := True;
+end;
+
+procedure TfrmEarthNow.tmrMinimizarTimer(Sender: TObject);
+begin
+  tmrMinimizar.Enabled := False;
+  OcultarAPP;
 end;
 
 procedure TfrmEarthNow.tmrAtualizaTimer(Sender: TObject);

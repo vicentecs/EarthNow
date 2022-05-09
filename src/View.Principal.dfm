@@ -38,6 +38,7 @@ object frmEarthNow: TfrmEarthNow
     Height = 13
     Anchors = [akLeft]
     Caption = 'Ultima Atualiza'#231#227'o'
+    Visible = False
   end
   object lblImagem: TLabel
     Left = 263
@@ -53,6 +54,7 @@ object frmEarthNow: TfrmEarthNow
     Width = 3
     Height = 13
     Anchors = [akLeft]
+    Visible = False
   end
   object lblAtualiza: TLabel
     Left = 8
@@ -165,5 +167,12 @@ object frmEarthNow: TfrmEarthNow
       Caption = 'Fechar'
       OnClick = FecharClick
     end
+  end
+  object tmrMinimizar: TTimer
+    Enabled = False
+    Interval = 1
+    OnTimer = tmrMinimizarTimer
+    Left = 296
+    Top = 120
   end
 end
