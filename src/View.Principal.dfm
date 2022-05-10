@@ -61,7 +61,7 @@ object frmEarthNow: TfrmEarthNow
     Top = 214
     Width = 46
     Height = 13
-    Caption = 'A&tualizar:'
+    Caption = 'A&tualizar'
     FocusControl = cbbIntervalo
   end
   object lblSobre: TLabel
