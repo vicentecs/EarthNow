@@ -208,7 +208,8 @@ end;
 
 procedure TfrmEarthNow.FormShow(Sender: TObject);
 begin
-  tmrAtualiza.Enabled := True;
+  if not tmrAtualiza.Enabled then
+    tmrAtualiza.Enabled := True;
 end;
 
 procedure TfrmEarthNow.lblSobreClick(Sender: TObject);
@@ -242,7 +243,10 @@ var
 begin
   for I := 1 to ParamCount do
     if LowerCase(ParamStr(i)) = '-startup' then
+    begin
+      tmrAtualiza.Interval := 1;
       tmrMinimizar.Enabled := True;
+    end;
 end;
 
 procedure TfrmEarthNow.tmrMinimizarTimer(Sender: TObject);

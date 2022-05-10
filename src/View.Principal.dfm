@@ -144,7 +144,7 @@ object frmEarthNow: TfrmEarthNow
   end
   object tmrAtualiza: TTimer
     Enabled = False
-    Interval = 10
+    Interval = 60000
     OnTimer = tmrAtualizaTimer
     Left = 376
     Top = 120

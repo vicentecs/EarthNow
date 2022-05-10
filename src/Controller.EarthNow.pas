@@ -23,14 +23,13 @@ type
   private
     FSatelite: TControllerSatelite;
     FConfig: TControllerConfig;
-    function DeveAtualiza(ArqBMP: string): Boolean;
+    function DeveAtualiza(Imagem: string): Boolean;
     function BaixarImg(pArqOri, pArqDesd: String): Boolean;
-    procedure AlterarBG(pImagemBMP: string; pTile: Boolean);
+    procedure AlterarBG(pImagem: string; pTile: Boolean);
   public
     constructor Create;
 
     function AlimentaSatelites(var AList: TListBox): Boolean;
-    function ConvertJPG_BMP(xFile: string): String;
     function UrlMini(AItem: Integer): string;
     function DeveAtualizar(AItem: Integer): Boolean;
 
@@ -54,7 +53,7 @@ begin
     AList.ItemIndex := FConfig.Satelite;
 end;
 
-procedure TControllerEarNow.AlterarBG(pImagemBMP: string; pTile: Boolean);
+procedure TControllerEarNow.AlterarBG(pImagem: string; pTile: Boolean);
 var
   Reg: TRegIniFile;
 begin
@@ -62,7 +61,7 @@ begin
   try
     with Reg do
     begin
-      WriteString('', 'Wallpaper', pImagemBMP);
+      WriteString('', 'Wallpaper', pImagem);
       WriteString('', 'WallpaperStyle', '6');
       if (pTile) then
         WriteString('', 'TileWallpaper', '1')
@@ -79,7 +78,6 @@ procedure TControllerEarNow.AplicarImg(AItem: Integer);
 var
   Source: TSourcesClass;
   ArqJPG: string;
-  ArqBMP: string;
 begin
   if AItem < 0 then
     raise Exception.Create('Informe o AItem');
@@ -88,29 +86,15 @@ begin
   if Source.url.large.IsEmpty then
     raise Exception.Create('url em branco');
 
-
   ArqJPG := FSatelite.GetNome(AItem);
-  ArqBMP := ChangeFileExt(ArqJPG, '.bmp');
-
-  if DeveAtualiza(ArqBMP) then
+  if DeveAtualiza(ArqJPG) then
   begin
     if not BaixarImg(Source.url.large, ArqJPG) then
       raise Exception.Create(Format('falha no donload:%s%s%s%s',[sLineBreak,Source.url.large,sLineBreak,ArqJPG]));
 
-//    ArqBMP := ConvertJPG_BMP(ArqJPG);
-//
-//    if ArqBMP.IsEmpty or not FileExists(ArqBMP) then
-//      raise Exception.Create('Falha na conversao pra BMP');
-
     FConfig.UltimoSat := AItem;
     FConfig.DtAtualizacao := Now;
   end;
-//
-//  if FileExists(ArqJPG) then
-//    DeleteFile(PChar(ArqJPG));
-
-//  if ArqBMP.IsEmpty or not FileExists(ArqBMP) then
-//    raise Exception.Create(Format('Arquivo BMP não exite: ', [ArqBMP]));
 
   AlterarBG(ArqJPG, False);
 end;
@@ -169,32 +153,6 @@ begin
   end;
 end;
 
-function TControllerEarNow.ConvertJPG_BMP(xFile: string): String;
-var
-  Bmp1: Vcl.Graphics.TBitmap;
-  JPG: TJPegImage;
-  Arq: string;
-begin
-  if ExtractFileExt(xFile) <> '.jpg' then
-    Exit;
-
-  JPG := TJPegImage.Create;
-  try
-    JPG.LoadFromFile(xFile);
-    Bmp1 := Vcl.Graphics.TBitmap.Create;
-    try
-      Arq := ChangeFileExt(xFile, '.bmp');
-      Bmp1.Assign(JPG);
-      Bmp1.SaveToFile(Arq);
-      Result := Arq;
-    finally
-      FreeAndNil(Bmp1);
-    end;
-  finally
-    FreeAndNil(JPG);
-  end;
-end;
-
 constructor TControllerEarNow.Create;
 begin
   inherited;
@@ -202,15 +160,15 @@ begin
   FConfig := TControllerConfig.Create;
 end;
 
-function TControllerEarNow.DeveAtualiza(ArqBMP: string): Boolean;
+function TControllerEarNow.DeveAtualiza(Imagem: string): Boolean;
 var
-  BmpDt: TDateTime;
+  ImgDt: TDateTime;
 begin
-  if not FileExists(ArqBMP) then
+  if not FileExists(Imagem) then
     Exit(True);
 
-  FileAge(ArqBMP, BmpDt);
-  Result := IncMinute(BmpDt, FConfig.TempoAtualiza) < Now;
+  FileAge(Imagem, ImgDt);
+  Result := IncMinute(ImgDt, FConfig.TempoAtualiza) < Now;
 end;
 
 function TControllerEarNow.DeveAtualizar(AItem: Integer): Boolean;
