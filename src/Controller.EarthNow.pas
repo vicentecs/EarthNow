@@ -11,9 +11,6 @@ uses
   Vcl.Graphics,
   Vcl.StdCtrls,
   Winapi.Windows,
-  IdHTTP,
-  IdSSLOpenSSL,
-
   Controller.Config,
   Controller.Satelite,
   Model.Satelite;
@@ -43,6 +40,9 @@ type
   end;
 
 implementation
+
+uses
+  RESTRequest4D;
 
   { TControllerEarNow }
 
@@ -123,32 +123,22 @@ end;
 function TControllerEarNow.BaixarImg(pArqOri, pArqDesd: String): Boolean;
 var
   Stream: TMemoryStream;
-  HTTP1: TIdHTTP;
-  IdSSL1: TIdSSLIOHandlerSocketOpenSSL;
+  LResponse: IResponse;
 begin
   if FileExists(pArqDesd) then
     DeleteFile(PChar(pArqDesd));
 
-  Stream := TMemoryStream.Create;
-  HTTP1 := TIdHTTP.Create(nil);
-  IdSSL1 := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-  try
-    HTTP1.IOHandler := IdSSL1;
-    IdSSL1.SSLOptions.SSLVersions := [sslvTLSv1, sslvTLSv1_1, sslvTLSv1_2];
+  LResponse := TRequest.New.BaseURL(pArqOri)
+    .Accept('application/x-www-form-urlencoded').Get;
+  Result := LResponse.StatusCode = 200;
+  if not Result then
+    Exit;
 
-    HTTP1.Request.Connection := 'Keep-Alive';
-    HTTP1.Request.UserAgent :=
-      'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36';
-    HTTP1.Request.Accept := 'application/json, text/javascript, */*; q=0.01';
-    HTTP1.Request.ContentType := 'application/x-www-form-urlencoded; charset=UTF-8';
-    HTTP1.Request.CharSet := 'utf-8';
-    HTTP1.HandleRedirects := True;
-    HTTP1.Get(pArqOri, Stream);
+  Stream := TMemoryStream.Create;
+  try
+    Stream.LoadFromStream(LResponse.ContentStream);
     Stream.SaveToFile(pArqDesd);
-    Result := FileExists(pArqDesd);
   finally
-    FreeAndNil(HTTP1);
-    FreeAndNil(IdSSL1);
     FreeAndNil(Stream);
   end;
 end;

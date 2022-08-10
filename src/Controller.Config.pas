@@ -47,7 +47,11 @@ var
 begin
   arq := GetNomeConfig;
   if not FileExists(arq) then
+  begin
+    if not Assigned(FConfig) then
+      FConfig := TConfig.Create;
     Exit;
+  end;
 
   if Assigned(FConfig) then
     FConfig.Free;
