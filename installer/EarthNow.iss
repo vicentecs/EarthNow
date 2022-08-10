@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define EarthNowName "Earth Now"
-#define EarthNowVersion "1.0.4"
+#define EarthNowVersion "1.0.5"
 #define EarthNowPublisher "VicenteCS"
 #define EarthNowURL "https://github.com/vicentecs/EarthNow"
 #define EarthNowExeName "EarthNow.exe"
@@ -35,8 +35,6 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "EarthNow.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "libeay32.dll"; DestDir: "{app}"
-Source: "ssleay32.dll"; DestDir: "{app}"
 
 [Icons]
 Name: "{group}\{#EarthNowName}"; Filename: "{app}\{#EarthNowExeName}"
