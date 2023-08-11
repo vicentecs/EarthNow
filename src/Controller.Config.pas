@@ -62,6 +62,8 @@ begin
     FConfig := TConfig.FromJsonString(Json.Text);
   finally
     Json.Free;
+    if not Assigned(FConfig) then
+      FConfig := TConfig.Create;
   end;
 end;
 

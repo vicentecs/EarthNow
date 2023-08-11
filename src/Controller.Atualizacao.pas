@@ -60,7 +60,7 @@ begin
   if not DeveAtualizar(FVersao, FBoss.version) then
     Exit;
 
-  ShowMessage(Format('Existe um atualização do APP da versão %s para %s, confirme para atualizar', [FVersao, FBoss.version]));
+  ShowMessage(Format('Existe uma atualização do APP da versão %s para %s, confirme para atualizar', [FVersao, FBoss.version]));
 
   sURL := GetUrlExe;
   sExe := GetNomeExe(sURL);
